@@ -12,4 +12,9 @@ fi
 host=$(printf "$1" | awk -F: '{printf $1}')
 port=$(printf "$1" | awk -F: '{printf $2}')
 
-sudo tcpdump "host $host and port $port" -w - | tcptrace -l -r stdin
+if [ -n "$port" ]; then
+  port="and port $port"
+fi
+
+sudo tcpdump "host $host $port" -w - | tcptrace -l -r stdin
+
