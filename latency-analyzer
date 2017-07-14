@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+base="$(basename "$0")"
+
+if [ $# -eq 0 ]; then
+  printf "usage: $base host:port\n"
+  exit 1
+fi
+
+host=$(printf "$1" | awk -F: '{printf $1}')
+port=$(printf "$1" | awk -F: '{printf $2}')
+
+sudo tcpdump "host $host and port $port" -w - | tcptrace -l -r stdin
